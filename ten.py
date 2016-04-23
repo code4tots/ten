@@ -2,6 +2,8 @@
 
 Simple text editor in Python 2/3.
 
+Only been tested on OS X, Terminal.app
+
 """
 
 import curses
@@ -58,7 +60,7 @@ class Editor(object):
         self._l.append('')
       while col >= len(self._l[row]):
         self._l[row] += ' '
-      self._l[row] = self._l[row][:col] + c + self._l[row][col+1:]
+      self._l[row] = self._l[row][:col] + c + self._l[row][col:]
       #* Update the cursors positions.
       new_cursors = []
       for cursor in self._c:
@@ -212,10 +214,6 @@ def main(window):
       break
     elif c == 127:  # backspace
       e.backspace()
-    # elif c == 10:  # '^j'
-    #   e.clone_down()
-    # elif c == 11:  # '^k'
-    #   e.clone_up()
     elif c == curses.KEY_LEFT:
       e.move_left()
     elif c == curses.KEY_RIGHT:
@@ -227,7 +225,7 @@ def main(window):
     elif c in PRINTABLE:
       e.add(chr(c))
     else:
-      raise Exception('Non-printable char: ' + repr(c))
+      raise Exception('Bad code: ' + repr(c))
     e.draw(window, 0)
     window.refresh()
 
